@@ -1,5 +1,3 @@
-
-
 import {Color} from 'ink';
 import React from 'react';
 
@@ -20,13 +18,13 @@ export class Hello extends React.Component<{}, {running: boolean}> {
 
     if (this.state.running) {
       return (
-        <Color yellow>
+        <Color bgYellow black>
           {"wait..."}
         </Color>
       )
     } else {
       return (
-        <Color green>
+        <Color bgGreen black>
           {"all done!"}
         </Color>
       )
