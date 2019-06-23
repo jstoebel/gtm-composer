@@ -10,7 +10,11 @@ interface State {
   accounts: tagmanager_v2.Schema$Account[]
 }
 
-export class Composer extends Component<Props, State> {
+const AccountsContext = React.createContext([] as tagmanager_v2.Schema$Account[]);
+
+export {AccountsContext}
+
+export default class Composer extends Component<Props, State> {
   constructor(p, s) {
     super(p, s)
     this.state = {
@@ -25,45 +29,11 @@ export class Composer extends Component<Props, State> {
     })
   }
 
-  eachAccount() {
-    return this.state.accounts.map((account) => {
-      return <Text>{account.name}</Text>
-    })
-  }
-  
   render() {
     return (
-      <Color bgGreen black>
-        {this.eachAccount()}
-      </Color>
+      <AccountsContext.Provider value={this.state.accounts}>
+        {this.props.children}
+      </AccountsContext.Provider>
     )
   }
 }
-
-// export const Composer = ({client}: Props) => {
-  
-//   const [accounts, setAccounts] = useState<tagmanager_v2.Schema$Account[]>([])
-  
-//   useEffect(() => {
-//     // const fetchData = async () => {
-//     //   const result = await client.accounts.list()
-//     //   setAccounts(result.data.account)
-//     // }
-
-//     // fetchData();
-
-//     client.accounts.list().then(({data}) => setAccounts(data.account))
-//   }, [])
-
-//   const eachAccount = () => {
-//     return accounts.map((account) => {
-//       return <Text>{account.name}</Text>
-//     })
-//   }
-//   return (
-//     <Color bgGreen black>
-//       <Text>{'Account names'}</Text>
-//       {eachAccount()}
-//     </Color>
-//   )
-// }
