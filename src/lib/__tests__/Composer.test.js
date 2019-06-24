@@ -24,7 +24,8 @@ describe('Composer', () => {
     expect(mockList).toHaveBeenCalledTimes(1)
   })
 
-  test('loads account names into state', () => {
+  test('loads account names into children', () => {
+
   })
 
 })

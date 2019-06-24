@@ -3,16 +3,15 @@ import React, {Component} from 'react';
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 
 interface Props {
-  client: tagmanager_v2.Tagmanager
+  client: tagmanager_v2.Tagmanager,
+  children: (accounts) => React.ReactElement
 }
 
 interface State {
   accounts: tagmanager_v2.Schema$Account[]
 }
 
-const AccountsContext = React.createContext([] as tagmanager_v2.Schema$Account[]);
-
-export {AccountsContext}
+export const ClientContext = React.createContext<tagmanager_v2.Tagmanager>(null);
 
 export default class Composer extends Component<Props, State> {
   constructor(p, s) {
@@ -31,9 +30,9 @@ export default class Composer extends Component<Props, State> {
 
   render() {
     return (
-      <AccountsContext.Provider value={this.state.accounts}>
-        {this.props.children}
-      </AccountsContext.Provider>
+      <ClientContext.Provider value={this.props.client}>
+        {this.props.children(this.state.accounts)}
+      </ClientContext.Provider>
     )
   }
 }
