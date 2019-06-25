@@ -1,4 +1,3 @@
-import {Color, Text} from 'ink';
 import React, {Component} from 'react';
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 
