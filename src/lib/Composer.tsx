@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react'
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 
 interface Props {
@@ -6,32 +6,25 @@ interface Props {
   children: (accounts) => React.ReactElement
 }
 
-interface State {
-  accounts: tagmanager_v2.Schema$Account[]
-}
-
 export const ClientContext = React.createContext<tagmanager_v2.Tagmanager>(null);
 
-export default class Composer extends Component<Props, State> {
-  constructor(p, s) {
-    super(p, s)
-    this.state = {
-      accounts: []
+const Composer = ({client, children}: Props) => {
+  const [accounts, setAccounts] = useState<tagmanager_v2.Schema$Account[]>([])
+
+  useEffect(() => {
+    async function fetchAccounts() {
+      const result = await client.accounts.list()
+      setAccounts(result.data.account)
     }
-  }
 
-  async componentDidMount() {
-    const result = await this.props.client.accounts.list()
-    this.setState({
-      accounts: result.data.account
-    })
-  }
+    fetchAccounts();
+  })
 
-  render() {
-    return (
-      <ClientContext.Provider value={this.props.client}>
-        {this.props.children(this.state.accounts)}
-      </ClientContext.Provider>
-    )
-  }
+  return (
+    <ClientContext.Provider value={client}>
+      {children(accounts)}
+    </ClientContext.Provider>
+  )
 }
+
+export default Composer
