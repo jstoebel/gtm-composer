@@ -1,7 +1,6 @@
 import React from 'react'
 import Composer from '../Composer'
 import {render} from 'ink-testing-library'
-import getElementWithContext from 'react-test-context-provider'
 
 describe('Composer', () => {
   let mockList
