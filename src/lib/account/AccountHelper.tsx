@@ -3,13 +3,13 @@ import {AccountHelperProps} from './types'
 import {Box} from 'ink'
 import { useState } from 'react';
 
-const AccountHelper = ({children, props}: AccountHelperProps) => {
+const AccountHelper = ({children, name}: AccountHelperProps) => {
 
   const [containers, setContainers] = useState<tagmanager_v2.Schema$Container[]>([])
   const [updateState, setUpdateState] = useState<'updating' | 'updated' | 'unchanged'>(null)
   // check that account has the given name, if not, update it
 
-  // also, expose all containers in that account
+  // also, fetch and expose all containers in that account
 
   return (
     <Box>
