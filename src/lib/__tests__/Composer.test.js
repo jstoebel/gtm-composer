@@ -1,7 +1,7 @@
 import React from 'react'
 import Composer from '../Composer'
 import {render} from 'ink-testing-library'
-
+import wait from 'waait'
 describe('Composer', () => {
   let mockList
   let resultAccounts = ['account1', 'account2']
@@ -17,7 +17,7 @@ describe('Composer', () => {
           }
         })
       })
-    });
+    }).mockName('mockList');;
     const mockClient = {
       accounts: {
         list: mockList
@@ -30,13 +30,16 @@ describe('Composer', () => {
         {mockChildren}
       </Composer>
     )
+
   })
 
-  test('fetches all account names', () => {
+  test('fetches all account names', async () => {
+    await wait(0)
     expect(mockList).toHaveBeenCalledTimes(1)
   })
 
-  test('exposes accounts to render prop function', () => {
+  test('exposes accounts to render prop function', async () => {
+    await wait(0)
     expect(mockChildren).toHaveBeenLastCalledWith(resultAccounts)
   })
 
