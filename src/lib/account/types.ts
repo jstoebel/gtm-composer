@@ -1,8 +1,8 @@
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 
 export interface AccountProps {
-  accountId: number,
-  name: string,
+  data: tagmanager_v2.Schema$Account, // the account's current data
+  name?: string, // the desired name for the account
   children?
 }
 

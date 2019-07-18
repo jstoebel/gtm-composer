@@ -61,12 +61,12 @@ describe('Account', () => {
 
   describe('updates account name', () => {
 
-    // it('updates account name', () => {
+    it('updates account name', () => {
 
-    // })
+    })
     
-    // it('leaves account name unchanged', () => {
+    it('leaves account name unchanged', () => {
 
-    // })
+    })
   })
 })

@@ -1,6 +1,6 @@
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 import {AccountHelperProps} from './types'
-import {Box} from 'ink'
+import {Box, Color} from 'ink'
 import React, { Component } from 'react';
 
 // const AccountHelper = ({children, client, accountId}: AccountHelperProps) => {
@@ -33,31 +33,51 @@ import React, { Component } from 'react';
 
 interface State {
   containers: tagmanager_v2.Schema$Container[]
+  status: 'working' | 'updated' | 'unchanged'
 }
 
 class AccountHelper extends Component<AccountHelperProps, State> {
   constructor(p, s) {
     super(p, s)
     this.state = {
-      containers: []
+      containers: [],
+      status: 'working'
     }
     this.componentDidMount = this.componentDidMount.bind(this);
     this.render = this.render.bind(this);
   } 
 
   componentDidMount() {
-    const {client, accountId} = this.props
+    const {client, data, name} = this.props
     async function fetchContainers() {
-      const result = await client.accounts.containers.list({ parent: `accounts/${accountId}`})
+      const result = await client.accounts.containers.list({ parent: `accounts/${data.accountId}`})
       this.setState({containers: result.data.container})
     }
 
+    /**
+     * update account name
+     */
+    async function updateName() {
+      if (data.name !== name) {
+        // name should be changed
+        await client.accounts.update({requestBody: {name}})
+        this.setState({status: 'changed'})
+      } else {
+        // names are equal and shouldn't be changed
+        this.setState({status: 'unchanged'})
+      }
+    }
+
     fetchContainers.bind(this)();
+    updateName.bind(this)();
   }
 
   render() {
     return (
       <Box>
+        <Color green>
+          {this.state.status}
+        </Color>
         {this.props.children(this.state.containers)}
       </Box>
     )
