@@ -1,20 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {clientContext} from '../clientContext'
 import AccountHelper from './AccountHelper'
-import {AccountHelperProps} from './types'
+import {AccountProps} from './types'
 
 
-const Account = (props: AccountHelperProps) => {
+const Account = (props: AccountProps) => {
+
   return (
     <clientContext.Consumer>
       {(client) => {
         return (
         <AccountHelper client={client} {...props} >
-          {this.props.children}
+          {props.children}
         </AccountHelper>
         )
       }}
     </clientContext.Consumer>
   )
+
 }
 export default Account

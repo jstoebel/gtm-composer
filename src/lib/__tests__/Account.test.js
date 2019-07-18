@@ -1,66 +1,72 @@
 import React from 'react'
 import {render} from 'ink-testing-library'
+import wait from 'waait'
 
 const getAccountWithContext = (client) => {
   jest.doMock('../clientContext', () => {
     return {
       clientContext: {
-        Consumer: (props) => props.children(context)
+        Consumer: (props) => props.children(client)
       }
     }
   })
 
-  return require('../account/Account').clientContext
+  return require('../account/Account').default
 }
 
 describe('Account', () => {
   let mockContainerList;
   describe('fetches containers', () => {
-    let resultContainers = jest.fn();
+    let resultContainers = jest.fn()
 
-    let mockChildren = jest.fn();;
+    let mockChildren = jest.fn();
     let wrapper;
-
+    let mockList;
     beforeEach(() => {
-      const mockList = jest.fn(() => {
+      mockList = jest.fn(() => {
         return new Promise((resolve) => {
           resolve({
             data: {
-              containers: resultAccounts
+              container: resultContainers
             }
           })
         })
       });
 
       const mockClient = {
-        containers: {
-          list: mockList
+        accounts: {
+          containers: {
+            list: mockList
+          }
         }
       }
       const Account = getAccountWithContext(mockClient)
+
       wrapper = render(
         <Account>
           {mockChildren}
         </Account>
       )
     });
-    it('works!', () => {
-
+    test('fetches all containers in account', async () => {
+      await wait(0);
+      expect(mockList).toHaveBeenCalledTimes(1);
     })
-    // it('fetches all containers in account')
-    // it('exposes containers to render props function')
+
+    test('exposes containers to render props function', async () => {
+      await wait(0);
+      expect(mockChildren).toHaveBeenLastCalledWith(resultContainers)
+    })
   })
 
   describe('updates account name', () => {
 
-    it('updates account name', () => {
+    // it('updates account name', () => {
 
-    })
+    // })
     
-    it('leaves account name unchanged', () => {
+    // it('leaves account name unchanged', () => {
 
-    })
-
+    // })
   })
-
 })
