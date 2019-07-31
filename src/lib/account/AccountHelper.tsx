@@ -58,13 +58,12 @@ class AccountHelper extends Component<AccountHelperProps, State> {
      * update account name
      */
     async function updateName() {
-      if (data.name !== name) {
+      if (data.name === name || !name) {
+        this.setState({status: 'unchanged'})
+      } else {
         // name should be changed
         await client.accounts.update({requestBody: {name}})
         this.setState({status: 'changed'})
-      } else {
-        // names are equal and shouldn't be changed
-        this.setState({status: 'unchanged'})
       }
     }
 

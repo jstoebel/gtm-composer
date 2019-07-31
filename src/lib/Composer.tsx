@@ -11,7 +11,7 @@ interface State {
   accounts: tagmanager_v2.Schema$Account[]
 }
 
-export class Composer extends Component<Props, State> {
+export default class Composer extends Component<Props, State> {
   constructor(p, s) {
     super(p, s)
     this.state = {
@@ -24,13 +24,13 @@ export class Composer extends Component<Props, State> {
       const result = await this.props.client.accounts.list()
       this.setState({accounts:result.data.account})
     }
-    fetchAccounts();
+    fetchAccounts.bind(this)();
   }
 
   render() {
     const {client, children} = this.props
     return (
-      <clientContext.Provider value={this.props.client}>
+      <clientContext.Provider value={client}>
         {children(this.state.accounts)}
       </clientContext.Provider>
     )

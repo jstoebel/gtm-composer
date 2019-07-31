@@ -16,38 +16,43 @@ const getAccountWithContext = (client) => {
 
 describe('Account', () => {
   let mockContainerList;
-  describe('fetches containers', () => {
-    let resultContainers = jest.fn()
-
-    let mockChildren = jest.fn();
-    let wrapper;
-    let mockList;
-    beforeEach(() => {
-      mockList = jest.fn(() => {
-        return new Promise((resolve) => {
-          resolve({
-            data: {
-              container: resultContainers
-            }
-          })
-        })
-      });
-
-      const mockClient = {
-        accounts: {
-          containers: {
-            list: mockList
-          }
+  let wrapper;
+  let mockChildren = jest.fn();
+  const resultContainers = jest.fn()
+  const mockList = jest.fn(() => {
+    return new Promise((resolve) => {
+      resolve({
+        data: {
+          container: resultContainers
         }
-      }
-      const Account = getAccountWithContext(mockClient)
+      })
+    })
+  });
+
+  const mockUpdate = jest.fn(() => {
+    return new Promise((resolve) => { resolve() })
+  });
+
+  const mockClient = {
+    accounts: {
+      containers: {
+        list: mockList
+      },
+      update: mockUpdate
+    }
+  }
+
+  const Account = getAccountWithContext(mockClient)
+
+  describe('fetches containers', () => {
+    beforeEach(() => {
 
       wrapper = render(
-        <Account>
+        <Account data={{accountId: 1}}>
           {mockChildren}
         </Account>
       )
-    });
+    })
     test('fetches all containers in account', async () => {
       await wait(0);
       expect(mockList).toHaveBeenCalledTimes(1);
@@ -60,13 +65,37 @@ describe('Account', () => {
   })
 
   describe('updates account name', () => {
-
-    it('updates account name', () => {
+    beforeEach(() => {
 
     })
+    it('updates account name', async () => {
+      wrapper = render(
+        <Account data={{name: 'Old Name'}} name={'New Name'}>
+          {mockChildren}
+        </Account>
+      )
+      await wait(0);
+      expect(mockUpdate).toHaveBeenLastCalledWith({requestBody: {name: 'New Name'}});
+    })
     
-    it('leaves account name unchanged', () => {
+    it('leaves account name unchanged', async () => {
+      wrapper = render(
+        <Account data={{name: 'Old Name'}} name={'Old Name'}>
+          {mockChildren}
+        </Account>
+      )
+      await wait(0);
+      expect(mockUpdate).not.toHaveBeenCalled();
+    })
 
+    it('leaves name unchanged when none given', async () => {
+      wrapper = render(
+        <Account data={{name: 'Old Name'}}>
+          {mockChildren}
+        </Account>
+      )
+      await wait(0);
+      expect(mockUpdate).not.toHaveBeenCalled()
     })
   })
 })
