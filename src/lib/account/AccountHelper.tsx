@@ -3,34 +3,6 @@ import {AccountHelperProps} from './types'
 import {Box, Color} from 'ink'
 import React, { Component } from 'react';
 
-// const AccountHelper = ({children, client, accountId}: AccountHelperProps) => {
-
-//   const [containers, setContainers] = useState<any>([])
-//   // const [updateState, setUpdateState] = useState<'updating' | 'updated' | 'unchanged'>(null)
-
-//   useEffect(() => {
-//     console.log('hello from use effect');
-    
-//     async function fetchContainers() {
-//       const result = await client.accounts.containers.list({ parent: `accounts/${accountId}`})
-//       console.log('setting containers', result.data.container);
-//       setContainers(result.data.container) // if you put in a hard coded value here, 
-//     }
-
-//     fetchContainers();
-//   }, [])
-//   // check that account has the given name, if not, update it
-
-//   // also, fetch and expose all containers in that account
-//   console.log('containers:', containers);
-
-//   return (
-//     <Box>
-//       {children(containers)}
-//     </Box>
-//   )
-// }
-
 interface State {
   containers: tagmanager_v2.Schema$Container[]
   status: 'working' | 'updated' | 'unchanged'
@@ -48,9 +20,9 @@ class AccountHelper extends Component<AccountHelperProps, State> {
   } 
 
   componentDidMount() {
-    const {client, data, name} = this.props
+    const {client, name, newName, accountId} = this.props
     async function fetchContainers() {
-      const result = await client.accounts.containers.list({ parent: `accounts/${data.accountId}`})
+      const result = await client.accounts.containers.list({ parent: `accounts/${accountId}`})
       this.setState({containers: result.data.container})
     }
 
@@ -58,11 +30,11 @@ class AccountHelper extends Component<AccountHelperProps, State> {
      * update account name
      */
     async function updateName() {
-      if (data.name === name || !name) {
+      if (!newName || !name || name === newName) {
         this.setState({status: 'unchanged'})
       } else {
         // name should be changed
-        await client.accounts.update({requestBody: {name}})
+        await client.accounts.update({requestBody: {name: newName}})
         this.setState({status: 'changed'})
       }
     }

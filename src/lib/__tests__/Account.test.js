@@ -44,18 +44,19 @@ describe('Account', () => {
 
   const Account = getAccountWithContext(mockClient)
 
-  describe('fetches containers', () => {
+  describe('fetches containers by accountId', () => {
+    const accountId = 1
     beforeEach(() => {
 
       wrapper = render(
-        <Account data={{accountId: 1}}>
+        <Account accountId={accountId}>
           {mockChildren}
         </Account>
       )
     })
     test('fetches all containers in account', async () => {
       await wait(0);
-      expect(mockList).toHaveBeenCalledTimes(1);
+      expect(mockList).toHaveBeenLastCalledWith({ parent: `accounts/${accountId}`});
     })
 
     test('exposes containers to render props function', async () => {
@@ -70,7 +71,7 @@ describe('Account', () => {
     })
     it('updates account name', async () => {
       wrapper = render(
-        <Account data={{name: 'Old Name'}} name={'New Name'}>
+        <Account name= {'Old Name'} newName={'New Name'}>
           {mockChildren}
         </Account>
       )
@@ -80,7 +81,7 @@ describe('Account', () => {
     
     it('leaves account name unchanged', async () => {
       wrapper = render(
-        <Account data={{name: 'Old Name'}} name={'Old Name'}>
+        <Account name={'Old Name'} newName={'Old Name'}>
           {mockChildren}
         </Account>
       )
@@ -88,14 +89,25 @@ describe('Account', () => {
       expect(mockUpdate).not.toHaveBeenCalled();
     })
 
-    it('leaves name unchanged when none given', async () => {
+    it('leaves name unchanged when no name given', async () => {
       wrapper = render(
-        <Account data={{name: 'Old Name'}}>
+        <Account name={'Old Name'}>
           {mockChildren}
         </Account>
       )
       await wait(0);
       expect(mockUpdate).not.toHaveBeenCalled()
     })
+
+    it('leaves name unchanged when no newName given', async () => {
+      wrapper = render(
+        <Account newName={'New Name'}>
+          {mockChildren}
+        </Account>
+      )
+      await wait(0);
+      expect(mockUpdate).not.toHaveBeenCalled()
+    })
+
   })
 })
