@@ -3,8 +3,7 @@ import {clientContext} from '../clientContext'
 import AccountHelper from './AccountHelper'
 import {AccountProps} from './types'
 
-
-const Account = (props: AccountProps) => {
+export const Account =  (props: AccountProps) => {
 
   return (
     <clientContext.Consumer>
@@ -19,4 +18,4 @@ const Account = (props: AccountProps) => {
   )
 
 }
-export default Account
+

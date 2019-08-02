@@ -4,7 +4,7 @@ export interface AccountProps {
   accountId: number
   name?: string // the current name for the account
   newName?: string // the desired name for the account
-  children?
+  children?(containers: tagmanager_v2.Schema$Container[]): React.ReactElement
 }
 
 export interface AccountHelperProps extends AccountProps {

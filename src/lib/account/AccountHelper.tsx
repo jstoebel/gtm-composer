@@ -44,11 +44,18 @@ class AccountHelper extends Component<AccountHelperProps, State> {
   }
 
   render() {
+    const {newName, name, accountId} = this.props;
+    const presentedName = newName || name || accountId;
     return (
       <Box>
-        <Color green>
-          {this.state.status}
-        </Color>
+        <Box paddingRight={1}>
+          <Color green>
+            {this.state.status}
+          </Color>
+        </Box>
+        <Box>
+          {presentedName}
+        </Box>
         {this.props.children(this.state.containers)}
       </Box>
     )
