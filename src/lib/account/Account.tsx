@@ -1,9 +1,9 @@
 import React from 'react';
 import {clientContext} from '../clientContext'
 import AccountHelper from './AccountHelper'
-import {AccountProps} from './types'
+import {Account} from './types'
 
-export const Account =  (props: AccountProps) => {
+export const Account =  (props: Account) => {
 
   return (
     <clientContext.Consumer>

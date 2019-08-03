@@ -1,5 +1,5 @@
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
-import {AccountHelperProps} from './types'
+import {IAccountHelper} from './types'
 import {Box, Color} from 'ink'
 import React, { Component } from 'react';
 
@@ -8,7 +8,7 @@ interface State {
   status: 'working' | 'updated' | 'unchanged'
 }
 
-class AccountHelper extends Component<AccountHelperProps, State> {
+class AccountHelper extends Component<IAccountHelper, State> {
   constructor(p, s) {
     super(p, s)
     this.state = {
