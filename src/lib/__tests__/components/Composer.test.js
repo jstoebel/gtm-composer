@@ -1,5 +1,5 @@
 import React from 'react'
-import Composer from '../Composer'
+import Composer from '../../Composer'
 import {render} from 'ink-testing-library'
 import wait from 'waait'
 describe('Composer', () => {

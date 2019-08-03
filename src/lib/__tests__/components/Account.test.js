@@ -11,7 +11,7 @@ const getAccountWithContext = (client) => {
     }
   })
 
-  return require('../account/Account').default
+  return require('../../account/Account').default
 }
 
 describe('Account', () => {
