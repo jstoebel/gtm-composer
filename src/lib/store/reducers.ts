@@ -1,22 +1,18 @@
 
 import { combineReducers } from 'redux';
-import {IStore} from './types'
-import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
-
+import {IStore, IAction, IAccount} from './types'
+import C from './constants'
 
 const initialState: IStore = {accounts: []};
 
-type Actions = 'UPDATE_ACCOUNTS' | 'UPDATE_ACCOUNT' | 'UPDATE_CONTAINERS' | 'UPDATE_CONTAINER' | 'DELETE_CONTAINER' | 'UPDATE_TAGS' | 'UPDATE_TAG' | 'DELETE_TAG' | 'UPDATE_TRIGGERS' | 'UPDATE_TRIGGER' | 'DELETE_TRIGGER' | 'UPDATE_VARIABLES' | 'UPDATE_VARIABLE' | 'DELETE_VARIABLE'
+type Payload = IAccount
 
-type AddAccountPayload = tagmanager_v2.Schema$Account[]
-
-type Payload = AddAccountPayload
-
-function  dataReducer(state=initialState, action: {type: Actions, payload: Payload}) { // fix the any on payloads
+function  dataReducer(state=initialState, action: {type: IAction, payload: Payload}) {
   switch(action.type) {
-    case 'UPDATE_ACCOUNTS':
-      // recieve an array of accounts, concat to the current array
-      return state;
+    case C.UPDATE_ACCOUNTS:
+      console.log('hello from UPDATE_ACCOUNTS in reducer', 'state', state, 'action', action);
+      
+      return {accounts: state.accounts.concat(action.payload)}
     case 'UPDATE_ACCOUNT':
       return state;
     case 'UPDATE_CONTAINERS':
@@ -60,7 +56,7 @@ function  dataReducer(state=initialState, action: {type: Actions, payload: Paylo
 }
 
 export default combineReducers({
-  dataReducer
+  data: dataReducer
 })
 /**
  * accounts:

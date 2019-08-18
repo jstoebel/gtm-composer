@@ -5,7 +5,6 @@ describe('action dispatches', () => {
   describe('fetchAccounts', () => {
     test('dispatches accounts to store', async () => {
 
-      const mockAccount = {name: 'an account'}
       const mockDispatchedAccount = {name: 'an account', containers: []}
       const mockData = [ mockDispatchedAccount ]
 

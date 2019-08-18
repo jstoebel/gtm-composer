@@ -15,30 +15,55 @@ const store = createStore(
   applyMiddleware(...middleware)
 )
 
-interface Props {
+interface IComposerWithState {
   client: tagmanager_v2.Tagmanager,
   children: (accounts: IAccount[]) => React.ReactElement,
+}
+
+interface IComposer extends IComposerWithState {
   fetchAccounts: (client: tagmanager_v2.Tagmanager) => void
   accounts: IAccount[]
 }
 
-const Composer: React.SFC = ({client, children, fetchAccounts, accounts}: Props) => {
+const Composer: React.FunctionComponent = ({client, children, fetchAccounts, accounts}: IComposer) => {
 
   useEffect(() => {
     fetchAccounts(client)
   }, [])
 
+  console.log('inner component', accounts);
+  
+  return (
+    <clientContext.Provider value={client}>
+      {children(accounts)}
+    </clientContext.Provider>
+  )
+}
+
+const mapStateToProps = (state) => {
+  return {accounts: state.data.accounts}
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchAccounts: (client) => dispatch(fetchAccounts(client))
+})
+
+const ConnectedComposer =  connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Composer)
+
+const ComposerWithState: React.FunctionComponent = ({children, client}: IComposerWithState) => {
   return (
     <ReduxProvider store={store}>
-      <clientContext.Provider value={client}>
-        {children(accounts)}
-      </clientContext.Provider>
+      <ConnectedComposer client={client}>
+        {children}
+      </ConnectedComposer>
     </ReduxProvider>
   )
 }
 
-
-export default connect(() => ({}), {fetchAccounts})(Composer)
+export default ComposerWithState;
 
 // export class Composer extends Component<Props, State> {
 //   constructor(p, s) {

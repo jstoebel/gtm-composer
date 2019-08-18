@@ -4,10 +4,10 @@ import {render} from 'ink-testing-library'
 import wait from 'waait'
 describe('Composer', () => {
   let mockList
-  let resultAccounts = ['account1', 'account2']
+  const resultAccounts = [{name: 'account1'}, {name: 'account2'}] // mock response from API
 
+  const expectedAccounts = resultAccounts.map((account) => ({...account, containers: []}))
   let mockChildren;
-  let wrapper;
   beforeEach(() => {
     mockList = jest.fn(() => {
       return new Promise((resolve) => {
@@ -25,7 +25,8 @@ describe('Composer', () => {
     }
 
     mockChildren = jest.fn();
-    wrapper = render(
+
+    render(
       <Composer client={mockClient}>
         {mockChildren}
       </Composer>
@@ -33,14 +34,8 @@ describe('Composer', () => {
 
   })
 
-  // test('fetches all account names', async () => {
-  //   await wait(0)
-  //   expect(mockList).toHaveBeenCalledTimes(1)
-  // })
-
   test('exposes accounts to render prop function', async () => {
     await wait(0)
-    expect(mockChildren).toHaveBeenLastCalledWith(undefined)
+    expect(mockChildren).toHaveBeenLastCalledWith(expectedAccounts)
   })
-
 })

@@ -13,3 +13,5 @@ export interface IAccount extends tagmanager_v2.Schema$Account {
 export interface IStore {
   accounts: IAccount[]
 }
+
+export type IAction = 'UPDATE_ACCOUNTS' | 'UPDATE_ACCOUNT' | 'UPDATE_CONTAINERS' | 'UPDATE_CONTAINER' | 'DELETE_CONTAINER' | 'UPDATE_TAGS' | 'UPDATE_TAG' | 'DELETE_TAG' | 'UPDATE_TRIGGERS' | 'UPDATE_TRIGGER' | 'DELETE_TRIGGER' | 'UPDATE_VARIABLES' | 'UPDATE_VARIABLE' | 'DELETE_VARIABLE'
