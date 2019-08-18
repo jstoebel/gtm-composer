@@ -1,6 +1,6 @@
 
 import { combineReducers } from 'redux';
-import IStore from './types'
+import {IStore} from './types'
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 
 
