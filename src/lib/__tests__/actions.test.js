@@ -1,5 +1,4 @@
 import {fetchAccounts} from '../store/actions'
-import mockClient from '../__mocks__/GoogleClient'
 
 describe('action dispatches', () => {
   describe('fetchAccounts', () => {
