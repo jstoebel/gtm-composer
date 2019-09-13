@@ -1,9 +1,9 @@
 import React from 'react';
 import {clientContext} from '../clientContext'
 import AccountHelper from './AccountHelper'
-import {Account} from './types'
+import {IAccount} from './types'
 
-export const Account =  (props: Account) => {
+const Account =  (props: IAccount) => {
 
   return (
     <clientContext.Consumer>
@@ -19,3 +19,4 @@ export const Account =  (props: Account) => {
 
 }
 
+export default Account

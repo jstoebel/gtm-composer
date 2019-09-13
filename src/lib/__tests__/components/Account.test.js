@@ -16,7 +16,7 @@ const getAccountWithContext = (client) => {
 
 describe('Account', () => {
   describe('updates account name', () => {
-    test('updates account from accountId', () => {
+    test('updates account name from accountId', () => {
       let mockContainerList;
       let wrapper;
       let mockChildren = jest.fn();
