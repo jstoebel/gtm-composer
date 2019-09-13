@@ -1,20 +1,30 @@
 
-import { combineReducers } from 'redux';
+import { Reducer, combineReducers } from 'redux';
 import {IStore, IAction, IAccount} from './types'
+import _ from 'lodash';
 import C from './constants'
 
 const initialState: IStore = {accounts: []};
 
-type Payload = IAccount
+type Payload = IAccount[] | IAccount
 
-function  dataReducer(state=initialState, action: {type: IAction, payload: Payload}) {
+const dataReducer:Reducer<IStore> = (state = initialState, action: {type: IAction, payload: Payload}): IStore => {
   switch(action.type) {
     case C.UPDATE_ACCOUNTS:
-      console.log('hello from UPDATE_ACCOUNTS in reducer', 'state', state, 'action', action);
-      
+      // update list of accounts in the store
       return {accounts: state.accounts.concat(action.payload)}
-    case 'UPDATE_ACCOUNT':
-      return state;
+    case C.UPDATE_ACCOUNT:
+      // change the name of the account
+      const {payload} = <{payload: IAccount}>action
+
+      const newAccounts = _.cloneDeep(state.accounts).map((account) => {
+        if (account.name === payload.name) {
+          return {...account, name: payload.name}
+        }
+        return account
+      })
+
+      return {accounts: newAccounts};
     case 'UPDATE_CONTAINERS':
       // could be array of containers or single container
       return state;

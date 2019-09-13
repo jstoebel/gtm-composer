@@ -12,3 +12,17 @@ export const fetchAccounts = (client: tagmanager_v2.Tagmanager) => {
     })
   }
 }
+
+// updateAccountName
+
+export const updateAccountName = (client: tagmanager_v2.Tagmanager, account: IAccount) => {
+  return async (dispatch) => {
+    // update the name
+    client.accounts.update(account)
+
+    // update local state
+    dispatch({
+      type: 'UPDATE_ACCOUNT', payload: account
+    })
+  }
+}
