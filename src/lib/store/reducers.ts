@@ -1,73 +1,70 @@
-
-import { Reducer, combineReducers } from 'redux';
-import {IStore, IAction, IAccount} from './types'
+import { Reducer } from 'redux';
+import {IStore, Actions} from './types'
 import _ from 'lodash';
-import C from './constants'
+import * as C from './constants'
+// post on type narrowing https://stackoverflow.com/questions/56624326/typescript-not-inferring-types-in-switch-statement-when-generics-and-conditional
 
 const initialState: IStore = {accounts: []};
 
-type Payload = IAccount[] | IAccount
+const dataReducer:Reducer<IStore> = (state = initialState, action: Actions): IStore => {
 
-const dataReducer:Reducer<IStore> = (state = initialState, action: {type: IAction, payload: Payload}): IStore => {
   switch(action.type) {
+
     case C.UPDATE_ACCOUNTS:
       // update list of accounts in the store
       return {accounts: state.accounts.concat(action.payload)}
-    case C.UPDATE_ACCOUNT:
-      // change the name of the account
-      const {payload} = <{payload: IAccount}>action
 
+    case C.UPDATE_ACCOUNT_NAME:
       const newAccounts = _.cloneDeep(state.accounts).map((account) => {
-        if (account.name === payload.name) {
-          return {...account, name: payload.name}
+        if (account.accountId === action.payload.accountId) {
+          return {...account, name: action.payload.name}
         }
         return account
       })
 
       return {accounts: newAccounts};
-    case 'UPDATE_CONTAINERS':
-      // could be array of containers or single container
-      return state;
-    case 'UPDATE_CONTAINER':
-      // update attributes of single container
-      return state;
-    case 'DELETE_CONTAINER':
-      return state;
-    case 'UPDATE_TAGS':
-      // add a collection or single tag
-      return state;
-    case 'UPDATE_TAG':
-      //update attributes of single tag
-      return state;
-    case 'DELETE_TAG':
-      return state;
+    // case 'UPDATE_CONTAINERS':
+    //   // could be array of containers or single container
+    //   return state;
+    // case 'UPDATE_CONTAINER':
+    //   // update attributes of single container
+    //   return state;
+    // case 'DELETE_CONTAINER':
+    //   return state;
+    // case 'UPDATE_TAGS':
+    //   // add a collection or single tag
+    //   return state;
+    // case 'UPDATE_TAG':
+    //   //update attributes of single tag
+    //   return state;
+    // case 'DELETE_TAG':
+    //   return state;
 
-    case 'UPDATE_TRIGGERS':
-      // add a collection or single trigger
-      return state;
-    case 'UPDATE_TRIGGER':
-      //update attributes of single trigger
-      return state;
-    case 'DELETE_TRIGGER':
-      return state;
+    // case 'UPDATE_TRIGGERS':
+    //   // add a collection or single trigger
+    //   return state;
+    // case 'UPDATE_TRIGGER':
+    //   //update attributes of single trigger
+    //   return state;
+    // case 'DELETE_TRIGGER':
+    //   return state;
 
-    case 'UPDATE_VARIABLES':
-      // add a collection or single variable
-      return state;
-    case 'UPDATE_VARIABLE':
-      //update attributes of single variable
-      return state;
-    case 'DELETE_VARIABLE':
-      return state;
+    // case 'UPDATE_VARIABLES':
+    //   // add a collection or single variable
+    //   return state;
+    // case 'UPDATE_VARIABLE':
+    //   //update attributes of single variable
+    //   return state;
+    // case 'DELETE_VARIABLE':
+    //   return state;
 
     default:
       return state;
   }
 }
 
-export default combineReducers({
-  data: dataReducer
-})
+export default dataReducer;
+
 /**
  * accounts:
  *  standard

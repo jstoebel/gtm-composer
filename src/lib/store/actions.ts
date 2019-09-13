@@ -22,7 +22,7 @@ export const updateAccountName = (client: tagmanager_v2.Tagmanager, account: IAc
 
     // update local state
     dispatch({
-      type: 'UPDATE_ACCOUNT', payload: account
+      type: 'UPDATE_ACCOUNT_NAME', payload: account
     })
   }
 }

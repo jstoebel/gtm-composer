@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react'
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 import {clientContext} from './clientContext'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
-import rootReducer from './store/reducers'
+import reducer from './store/reducers'
 import {IAccount} from './types'
 import thunk from 'redux-thunk'
 import { connect } from 'react-redux'
@@ -11,7 +11,9 @@ import {fetchAccounts} from './store/actions'
 
 const middleware = [ thunk ]
 const store = createStore(
-  rootReducer,
+  combineReducers({
+    data: reducer
+  }),
   applyMiddleware(...middleware)
 )
 
@@ -31,8 +33,6 @@ const Composer: React.FunctionComponent = ({client, children, fetchAccounts, acc
     fetchAccounts(client)
   }, [])
 
-  console.log('inner component', accounts);
-  
   return (
     <clientContext.Provider value={client}>
       {children(accounts)}
