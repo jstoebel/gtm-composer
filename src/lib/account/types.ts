@@ -1,20 +1,16 @@
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
-
-export interface IAccount {
-  accountId: number
-  name?: string // the current name for the account
-  newName?: string // the desired name for the account
+import { IAccount } from './types'
+export interface IAccount extends tagmanager_v2.Schema$Account {
   children?(containers: tagmanager_v2.Schema$Container[]): React.ReactElement
 }
 
-export interface IAccountHelperProps extends IAccount {
-  client: tagmanager_v2.Tagmanager,
+export interface IAccountHelper extends IAccount {
+  client: tagmanager_v2.Tagmanager
 }
 
 /**
  * Data Layer Interfaces
  */
-
 export interface IAccountData extends tagmanager_v2.Schema$Account {
   containers: IContainerData[]
 }

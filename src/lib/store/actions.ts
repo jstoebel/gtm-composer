@@ -13,12 +13,16 @@ export const fetchAccounts = (client: tagmanager_v2.Tagmanager) => {
   }
 }
 
-// updateAccountName
-
+/**
+ * Update the name of a GTM Account.
+ * Note: Does not check if name needs changing. That responsability is on the caller/
+ * @param client updateAccountName
+ * @param {IAccount} account
+ */
 export const updateAccountName = (client: tagmanager_v2.Tagmanager, account: IAccount) => {
   return async (dispatch) => {
     // update the name
-    client.accounts.update(account)
+    await client.accounts.update(account)
 
     // update local state
     dispatch({
