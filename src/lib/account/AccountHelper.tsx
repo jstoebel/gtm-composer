@@ -1,34 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
-import {IAccountHelper} from './types'
+import {IAccountHelper, IAccountData} from './types'
 import {Box, Color} from 'ink'
 
-interface State {
-  containers: tagmanager_v2.Schema$Container[]
-  status: 'working' | 'updated' | 'unchanged'
-}
+const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, accounts, name, accountId, updateAccountName}) => {
 
-const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client}) => {
+  const [changeNameState, setChangeNameState] = useState<'working' | 'updated' | 'unchanged' | 'not found'>()
 
-  const [state, setState] = useState<State>({
-    containers: [],
-    status: 'working'
-  })
+  /**
+   * attempts to find an account by ID
+   * @param accountId - an accountId to search for in known accounts
+   * @returns found account or nothing if not found
+   */
+  const findAccountById = (): IAccountData | undefined => accounts.find((accountFromList) => accountFromList.accountId === accountId)
 
-  function accountShouldChangeName():boolean {
-    // find the account this is referencing:
+  const findAccountByName = (): IAccountData | undefined => accounts.find((accountFromList) => accountFromList.name === name)
+  /**
+   * Find the matching account from the store if it exists. 
+   * Search by both accoundtId and name.
+   * Store result in `containersAndState
+   * If the name is provided, the first match is used.
+   */
+  function findExistingAccount(): IAccountData | undefined {
+    return findAccountById() || findAccountByName()
+  }
 
-    // name is the same -> return false
+  /**
+   * Determines if the account needs to change its name
+   * @return {object.accountKnown} - if the account is found in existing accounts
+   * @return {object.accountShouldChangeName} - if the account's name should change
+   */
+  function accountComparison(existingAccount: IAccountData): {accountKnown: boolean, accountShouldChangeName: boolean} {
+    // can't find account
+    if (!existingAccount) return {accountKnown: false, accountShouldChangeName: false};
 
-    // name is different -> return true
+    // name is the same
+    if (existingAccount.name === name) return {accountKnown: true, accountShouldChangeName: false}
 
-    // can't find account -> return false
-    return false
+    return {accountKnown: true, accountShouldChangeName: true}
   }
 
   useEffect(() => {
-    
+    const existingAccount = findExistingAccount();
+    if (!existingAccount) return;
+
+    const comparison = accountComparison(existingAccount);
+  
+    if (!comparison.accountKnown) {
+      setChangeNameState('not found')
+      return;
+    }
+
+    if (!comparison.accountShouldChangeName) {
+      setChangeNameState('working')
+      updateAccountName(client, existingAccount)
+      setChangeNameState('updated')
+    } else {
+      setChangeNameState('unchanged')
+    }
   }, [])
+
   return <div></div>
 }
 
