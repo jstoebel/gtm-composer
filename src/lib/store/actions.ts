@@ -19,7 +19,7 @@ export const fetchAccounts = (client: tagmanager_v2.Tagmanager) => {
  * @param client updateAccountName
  * @param {IAccount} account
  */
-export const updateAccountName = (client: tagmanager_v2.Tagmanager, account: IAccount) => {
+export const  updateAccountName = (client: tagmanager_v2.Tagmanager, account: IAccount) => {
   return async (dispatch) => {
     // update the name
     await client.accounts.update(account)

@@ -54,7 +54,6 @@ describe('Account', () => {
 
       expect(mockUpdate).toHaveBeenLastCalledWith({newName})
     })
-  
   })
 
   test.todo('exposes containers to render prop function')

@@ -7,6 +7,8 @@ import { updateAccountName } from '../store/actions';
 import { connect } from 'react-redux'
 
 const Account = (props: IAccount) => {
+  console.log('got here');
+  
   return (
     <clientContext.Consumer>
       {(client: tagmanager_v2.Tagmanager) => {
@@ -21,7 +23,7 @@ const Account = (props: IAccount) => {
 }
 
 const mapStateToProps = (state) => {
-  return {accounts: state.data.accounts}
+  return {allAccounts: state.data.accounts}
 }
 
 const mapDispatchToProps = { updateAccountName }

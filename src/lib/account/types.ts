@@ -4,8 +4,8 @@ import {IAccount as IAccountData} from '../store/types'
 
 export interface IAccount extends tagmanager_v2.Schema$Account {
   children?(containers: tagmanager_v2.Schema$Container[]): React.ReactElement
-  accounts: IAccountData[],
-  updateAccountName: (client: tagmanager_v2.Tagmanager, account: IAccount) => Promise<void>,
+  updateAccountName: (client: tagmanager_v2.Tagmanager, account: IAccountData) => Promise<void>,
+  allAccounts: IAccountData[],
 }
 
 export interface IAccountHelper extends IAccount {

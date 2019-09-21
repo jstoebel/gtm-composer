@@ -8,6 +8,7 @@ import {IAccount} from './types'
 import thunk from 'redux-thunk'
 import { connect } from 'react-redux'
 import {fetchAccounts} from './store/actions'
+import {ICombinedStore} from './store/types'
 
 const middleware = [ thunk ]
 const store = createStore(
@@ -28,7 +29,8 @@ interface IComposer extends IComposerWithState {
 }
 
 const Composer: React.FunctionComponent = ({client, children, fetchAccounts, accounts}: IComposer) => {
-
+  console.log('got here!');
+  
   useEffect(() => {
     fetchAccounts(client)
   }, [])
@@ -40,7 +42,7 @@ const Composer: React.FunctionComponent = ({client, children, fetchAccounts, acc
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: ICombinedStore, _ownProps) => {
   return {accounts: state.data.accounts}
 }
 
@@ -48,7 +50,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAccounts: (client) => dispatch(fetchAccounts(client))
 })
 
-const ConnectedComposer =  connect(
+const ConnectedComposer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Composer)

@@ -15,6 +15,10 @@ export interface IStore {
   accounts: IAccount[]
 }
 
+export interface ICombinedStore {
+  data: IStore
+}
+
 interface Action<Type, Payload> {
   type: Type
   payload: Payload

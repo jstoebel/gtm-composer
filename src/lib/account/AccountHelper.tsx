@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {tagmanager_v2} from 'googleapis/build/src/apis/tagmanager/v2'
 import {IAccountHelper, IAccountData} from './types'
-import {Box, Color} from 'ink'
+// import {Box, Color} from 'ink'
 
-const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, accounts, name, accountId, updateAccountName}) => {
+const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccounts, name, accountId, updateAccountName}) => {
 
   const [changeNameState, setChangeNameState] = useState<'working' | 'updated' | 'unchanged' | 'not found'>()
-
+  console.log(changeNameState);
+  
   /**
    * attempts to find an account by ID
    * @param accountId - an accountId to search for in known accounts
    * @returns found account or nothing if not found
    */
-  const findAccountById = (): IAccountData | undefined => accounts.find((accountFromList) => accountFromList.accountId === accountId)
+  const findAccountById = (): IAccountData | undefined => allAccounts.find((accountFromList) => accountFromList.accountId === accountId)
 
-  const findAccountByName = (): IAccountData | undefined => accounts.find((accountFromList) => accountFromList.name === name)
+  const findAccountByName = (): IAccountData | undefined => allAccounts.find((accountFromList) => accountFromList.name === name)
   /**
    * Find the matching account from the store if it exists. 
    * Search by both accoundtId and name.
@@ -44,14 +44,16 @@ const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, accounts
     const existingAccount = findExistingAccount();
     if (!existingAccount) return;
 
-    const comparison = accountComparison(existingAccount);
+    const {accountKnown, accountShouldChangeName} = accountComparison(existingAccount);
   
-    if (!comparison.accountKnown) {
+    if (!accountKnown) {
       setChangeNameState('not found')
       return;
     }
 
-    if (!comparison.accountShouldChangeName) {
+    if (accountShouldChangeName) {
+      
+      
       setChangeNameState('working')
       updateAccountName(client, existingAccount)
       setChangeNameState('updated')
