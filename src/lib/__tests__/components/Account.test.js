@@ -1,6 +1,8 @@
 import React from 'react'
 import {render} from 'ink-testing-library'
 import wait from 'waait'
+import Composer from '../../Composer'
+import Account from '../../account/Account'
 
 const getAccountWithContext = (client) => {
   jest.doMock('../../clientContext', () => {
@@ -10,13 +12,12 @@ const getAccountWithContext = (client) => {
       }
     }
   })
-
   return require('../../account/Account').default
 }
 
 describe('Account', () => {
   describe('updates account name', () => {
-    test('updates account name from accountId', () => {
+    test('updates account name from accountId', async () => {
       let mockContainerList;
       let wrapper;
       let mockChildren = jest.fn();
@@ -25,12 +26,24 @@ describe('Account', () => {
         return new Promise((resolve) => {
           resolve({
             data: {
-              container: resultContainers
+              container: []
             }
           })
         })
       });
     
+
+      const mockListAccounts = jest.fn(() => {
+        console.log('mockListAccounts was called');
+        
+        return new Promise((resolve) => {
+          resolve({
+            data: {
+              account: [{name: 'first account', accoundId: 1}]
+            }
+          })
+        })
+      })
       const mockUpdate = jest.fn(() => {
         return new Promise((resolve) => { resolve() })
       });
@@ -39,19 +52,28 @@ describe('Account', () => {
           containers: {
             list: mockList
           },
-          update: mockUpdate
+          update: mockUpdate,
+          list: mockListAccounts
         }
       }
-    
-      const Account = getAccountWithContext(mockClient)
+
       const accountId = 1;
       const newName = 'new name'
-      wrapper = render(
-        <Account accountId={accountId}>
-          {mockChildren}
-        </Account>
-      )
 
+      render(
+        <Composer client={mockClient}>
+          {
+            (_accounts) => {
+              return (
+                <Account accountId={accountId}>
+                  {mockChildren}
+                </Account>
+              )
+            }
+          }
+        </Composer>
+      )
+      await wait(0)
       expect(mockUpdate).toHaveBeenLastCalledWith({newName})
     })
   })

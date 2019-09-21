@@ -7,8 +7,6 @@ import { updateAccountName } from '../store/actions';
 import { connect } from 'react-redux'
 
 const Account = (props: IAccount) => {
-  console.log('got here');
-  
   return (
     <clientContext.Consumer>
       {(client: tagmanager_v2.Tagmanager) => {

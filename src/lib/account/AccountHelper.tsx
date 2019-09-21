@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {IAccountHelper, IAccountData} from './types'
+import { loadavg } from 'os';
 // import {Box, Color} from 'ink'
 
 const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccounts, name, accountId, updateAccountName}) => {
 
-  const [changeNameState, setChangeNameState] = useState<'working' | 'updated' | 'unchanged' | 'not found'>()
-  console.log(changeNameState);
+  console.log('allAccounts', allAccounts);
   
+  const [changeNameState, setChangeNameState] = useState<'working' | 'updated' | 'unchanged' | 'not found'>()
+
   /**
    * attempts to find an account by ID
    * @param accountId - an accountId to search for in known accounts
@@ -41,7 +43,10 @@ const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccou
   }
 
   useEffect(() => {
+    
     const existingAccount = findExistingAccount();
+    console.log('existingAccount', existingAccount);
+    
     if (!existingAccount) return;
 
     const {accountKnown, accountShouldChangeName} = accountComparison(existingAccount);
@@ -64,59 +69,5 @@ const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccou
 
   return <div></div>
 }
-
-// class AccountHelper extends Component<IAccountHelper, State> {
-//   constructor(p, s) {
-//     super(p, s)
-//     this.state = {
-//       containers: [],
-//       status: 'working'
-//     }
-//     this.componentDidMount = this.componentDidMount.bind(this);
-//     this.render = this.render.bind(this);
-//   } 
-
-//   componentDidMount() {
-//     const {client, name, newName, accountId} = this.props
-//     async function fetchContainers() {
-//       const result = await client.accounts.containers.list({ parent: `accounts/${accountId}`})
-//       this.setState({containers: result.data.container})
-//     }
-
-//     /**
-//      * update account name
-//      */
-//     async function updateName() {
-//       if (!newName || !name || name === newName) {
-//         this.setState({status: 'unchanged'})
-//       } else {
-//         // name should be changed
-//         await client.accounts.update({requestBody: {name: newName}})
-//         this.setState({status: 'changed'})
-//       }
-//     }
-
-//     fetchContainers.bind(this)();
-//     updateName.bind(this)();
-//   }
-
-//   render() {
-//     const {newName, name, accountId} = this.props;
-//     const presentedName = newName || name || accountId;
-//     return (
-//       <Box>
-//         <Box paddingRight={1}>
-//           <Color green>
-//             {this.state.status}
-//           </Color>
-//         </Box>
-//         <Box>
-//           {presentedName}
-//         </Box>
-//         {this.props.children(this.state.containers)}
-//       </Box>
-//     )
-//   }
-// }
 
 export default AccountHelper

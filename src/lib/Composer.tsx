@@ -29,8 +29,7 @@ interface IComposer extends IComposerWithState {
 }
 
 const Composer: React.FunctionComponent = ({client, children, fetchAccounts, accounts}: IComposer) => {
-  console.log('got here!');
-  
+
   useEffect(() => {
     fetchAccounts(client)
   }, [])
@@ -55,7 +54,7 @@ const ConnectedComposer = connect(
   mapDispatchToProps
 )(Composer)
 
-const ComposerWithState: React.FunctionComponent = ({children, client}: IComposerWithState) => {
+const ComposerWithState = ({children, client}: IComposerWithState) => {
   return (
     <ReduxProvider store={store}>
       <ConnectedComposer client={client}>
@@ -66,29 +65,3 @@ const ComposerWithState: React.FunctionComponent = ({children, client}: ICompose
 }
 
 export default ComposerWithState;
-
-// export class Composer extends Component<Props, State> {
-//   constructor(p, s) {
-//     super(p, s)
-//     this.state = {
-//       accounts: []
-//     }
-//   }
-
-//   componentDidMount() {
-//     async function fetchAccounts() {
-//       const result = await this.props.client.accounts.list()
-//       this.setState({accounts: result.data.account})
-//     }
-//     fetchAccounts.bind(this)();
-//   }
-
-//   render() {
-//     const {client, children} = this.props
-//     return (
-//       <clientContext.Provider value={client}>
-//         {children(this.state.accounts)}
-//       </clientContext.Provider>
-//     )
-//   }
-// }
