@@ -39,7 +39,7 @@ describe('Account', () => {
         return new Promise((resolve) => {
           resolve({
             data: {
-              account: [{name: 'first account', accoundId: 1}]
+              account: [{name: 'first account', accountId: 1}]
             }
           })
         })
@@ -73,8 +73,8 @@ describe('Account', () => {
           }
         </Composer>
       )
-      await wait(0)
-      expect(mockUpdate).toHaveBeenLastCalledWith({newName})
+      await wait(500)
+      expect(mockUpdate).toHaveBeenLastCalledWith({name: 'first account', accountId: 1, containers: []})
     })
   })
 

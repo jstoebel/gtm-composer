@@ -5,8 +5,6 @@ import { loadavg } from 'os';
 
 const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccounts, name, accountId, updateAccountName}) => {
 
-  console.log('allAccounts', allAccounts);
-  
   const [changeNameState, setChangeNameState] = useState<'working' | 'updated' | 'unchanged' | 'not found'>()
 
   /**
@@ -65,7 +63,7 @@ const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccou
     } else {
       setChangeNameState('unchanged')
     }
-  }, [])
+  }, [allAccounts])
 
   return <div></div>
 }
