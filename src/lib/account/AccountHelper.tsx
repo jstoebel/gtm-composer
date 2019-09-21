@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {IAccountHelper, IAccountData} from './types'
-import { loadavg } from 'os';
-// import {Box, Color} from 'ink'
+
+import {Box, Color, Text} from 'ink'
 
 const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccounts, name, accountId, updateAccountName}) => {
 
+  const [foundAccount, setFoundAccount] = useState<IAccountData>()
   const [changeNameState, setChangeNameState] = useState<'working' | 'updated' | 'unchanged' | 'not found'>()
 
   /**
@@ -43,7 +44,6 @@ const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccou
   useEffect(() => {
     
     const existingAccount = findExistingAccount();
-    console.log('existingAccount', existingAccount);
     
     if (!existingAccount) return;
 
@@ -55,17 +55,25 @@ const AccountHelper:React.FunctionComponent<IAccountHelper> = ({client, allAccou
     }
 
     if (accountShouldChangeName) {
-      
-      
       setChangeNameState('working')
       updateAccountName(client, existingAccount)
       setChangeNameState('updated')
     } else {
       setChangeNameState('unchanged')
     }
+
+    setFoundAccount(existingAccount)
   }, [allAccounts])
 
-  return <div></div>
+  const displayName = (foundAccount && foundAccount.name) || 'unknown account'
+
+  return (
+    <Box>
+      <Text>{displayName}</Text>
+      {': '}
+      <Color>{changeNameState}</Color>
+    </Box>
+  )
 }
 
 export default AccountHelper

@@ -18,10 +18,7 @@ const getAccountWithContext = (client) => {
 describe('Account', () => {
   describe('updates account name', () => {
     test('updates account name from accountId', async () => {
-      let mockContainerList;
-      let wrapper;
       let mockChildren = jest.fn();
-      const resultContainers = jest.fn()
       const mockList = jest.fn(() => {
         return new Promise((resolve) => {
           resolve({
@@ -58,9 +55,8 @@ describe('Account', () => {
       }
 
       const accountId = 1;
-      const newName = 'new name'
 
-      render(
+      const {lastFrame} = render(
         <Composer client={mockClient}>
           {
             (_accounts) => {
@@ -74,9 +70,14 @@ describe('Account', () => {
         </Composer>
       )
       await wait(500)
-      expect(mockUpdate).toHaveBeenLastCalledWith({name: 'first account', accountId: 1, containers: []})
+      expect(mockUpdate).toHaveBeenLastCalledWith({name: 'first account', accountId, containers: []})
+      
+      // expected final output
+      expect(lastFrame()).toEqual('first account: updated')
     })
   })
 
-  test.todo('exposes containers to render prop function')
+  describe('fetches containers', () => {
+    test.todo('exposes containers to render prop function')
+  })
 })
