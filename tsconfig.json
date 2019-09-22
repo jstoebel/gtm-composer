@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "target": "es2017",
+    "target": "es5",
+    "module": "commonjs",
+    // re add, module: ES6
     "outDir": "build/main",
     "rootDir": "src",
     "moduleResolution": "node",
-    "module": "commonjs",
     "declaration": true,
     "inlineSourceMap": true,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
@@ -38,9 +39,10 @@
 
     "lib": ["es2017"],
     "types": ["node"],
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules/**"],
   "compileOnSave": false
 }
