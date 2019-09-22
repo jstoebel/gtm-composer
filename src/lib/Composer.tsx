@@ -20,7 +20,7 @@ const store = createStore(
 
 interface IComposerWithState {
   client: tagmanager_v2.Tagmanager,
-  children: (accounts: IAccount[]) => React.ReactElement,
+  children: (accounts: IAccount[]) => React.ReactElement | React.ReactElement[],
 }
 
 interface IComposer extends IComposerWithState {
